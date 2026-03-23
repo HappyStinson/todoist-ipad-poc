@@ -2,6 +2,7 @@ import type { Handler } from "@netlify/functions";
 import { TodoistApi } from "@doist/todoist-api-typescript";
 
 const token = process.env.TODOIST_API_TOKEN;
+const appAccessKey = process.env.APP_ACCESS_KEY;
 
 function json(statusCode: number, payload: unknown) {
   return {
@@ -23,6 +24,13 @@ async function getInboxProjectId(api: TodoistApi) {
 export const handler: Handler = async (event) => {
   if (!token) {
     return json(500, { error: "Missing TODOIST_API_TOKEN environment variable" });
+  }
+  if (!appAccessKey) {
+    return json(500, { error: "Missing APP_ACCESS_KEY environment variable" });
+  }
+  const providedKey = event.headers["x-app-access-key"] || event.headers["X-App-Access-Key"];
+  if (!providedKey || providedKey !== appAccessKey) {
+    return json(401, { error: "Unauthorized" });
   }
 
   const api = new TodoistApi(token);

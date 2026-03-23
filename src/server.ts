@@ -11,6 +11,10 @@ const token = process.env.TODOIST_API_TOKEN;
 if (!token) {
   throw new Error("Missing TODOIST_API_TOKEN in environment.");
 }
+const appAccessKey = process.env.APP_ACCESS_KEY;
+if (!appAccessKey) {
+  throw new Error("Missing APP_ACCESS_KEY in environment.");
+}
 
 const app = express();
 const api = new TodoistApi(token);
@@ -21,6 +25,13 @@ const publicDir = path.join(__dirname, "..", "public");
 
 app.use(express.json());
 app.use(express.static(publicDir));
+app.use("/api", (req, res, next) => {
+  const providedKey = req.header("X-App-Access-Key");
+  if (!providedKey || providedKey !== appAccessKey) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  return next();
+});
 
 async function getInboxProjectId(): Promise<string> {
   const user = await api.getUser();

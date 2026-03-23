@@ -28,6 +28,7 @@ cp .env.example .env
 ```
 
 Edit `.env` and set your real `TODOIST_API_TOKEN`.
+Also set `APP_ACCESS_KEY` to a long random value.
 
 Start the dev server:
 
@@ -55,6 +56,7 @@ Steps:
 3. Build settings can stay default (config is read from `netlify.toml`).
 4. Add environment variable in Netlify:
    - `TODOIST_API_TOKEN=your_token`
+- `APP_ACCESS_KEY=your_long_random_value`
 5. Deploy.
 
 After deploy, open your Netlify URL on iPad.
@@ -66,4 +68,5 @@ In Todoist, open settings and find your personal API token in integrations/devel
 ## Notes
 
 - Token stays server-side in `.env` and is not stored in browser local storage.
+- API requires `APP_ACCESS_KEY`; the browser prompts once and stores it locally on-device.
 - This is a proof of concept focused on list/task read + complete flows.

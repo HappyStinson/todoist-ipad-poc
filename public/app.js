@@ -10,12 +10,49 @@ const inboxState = document.getElementById("inboxState");
 const dueTasksState = document.getElementById("dueTasksState");
 const inboxTasksList = document.getElementById("inboxTasksList");
 const dueTasksList = document.getElementById("dueTasksList");
+const ACCESS_KEY_STORAGE = "todoist.appAccessKey";
 let inboxProject = null;
 
+function getAccessKey() {
+  return localStorage.getItem(ACCESS_KEY_STORAGE) || "";
+}
+
+function setAccessKey(value) {
+  localStorage.setItem(ACCESS_KEY_STORAGE, value.trim());
+}
+
+function clearAccessKey() {
+  localStorage.removeItem(ACCESS_KEY_STORAGE);
+}
+
+function ensureAccessKey() {
+  const existing = getAccessKey();
+  if (existing) {
+    return existing;
+  }
+  const entered = window.prompt("Enter app access key");
+  if (!entered || !entered.trim()) {
+    throw new Error("Missing app access key.");
+  }
+  const key = entered.trim();
+  setAccessKey(key);
+  return key;
+}
+
 async function callApi(path, options = {}) {
-  const response = await fetch(path, options);
+  const key = ensureAccessKey();
+  const response = await fetch(path, {
+    ...options,
+    headers: {
+      ...(options.headers || {}),
+      "X-App-Access-Key": key,
+    },
+  });
   const body = await response.json().catch(() => ({}));
   if (!response.ok) {
+    if (response.status === 401) {
+      clearAccessKey();
+    }
     const message = body.error || `Request failed: ${response.status}`;
     throw new Error(message);
   }
