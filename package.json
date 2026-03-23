@@ -1,0 +1,23 @@
+{
+  "name": "todoist-ipad-poc",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "build": "tsc --noEmit",
+    "start": "node --enable-source-maps dist/server.js"
+  },
+  "dependencies": {
+    "@doist/todoist-api-typescript": "latest",
+    "dotenv": "latest",
+    "express": "latest"
+  },
+  "devDependencies": {
+    "@netlify/functions": "latest",
+    "@types/express": "latest",
+    "@types/node": "latest",
+    "tsx": "latest",
+    "typescript": "latest"
+  }
+}

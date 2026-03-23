@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Todoist iPad POC</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="app-header">
+        <h1>Todoist iPad POC</h1>
+        <p class="subtitle">Inbox + due-date focus</p>
+      </header>
+
+      <section class="card" id="connectionSection">
+        <div class="row spread">
+          <h2>Connection</h2>
+          <button id="testBtn" class="ghost">Test</button>
+        </div>
+        <p id="healthState" class="state">Ready.</p>
+      </section>
+
+      <section class="card">
+        <div class="row spread">
+          <h2 id="inboxTitle">Inbox</h2>
+          <button id="refreshInboxBtn" class="ghost">Refresh</button>
+        </div>
+        <div class="row">
+          <input id="newInboxTaskInput" type="text" placeholder="Add a task to Inbox" />
+          <button id="addInboxTaskBtn">Add</button>
+        </div>
+        <div id="inboxState" class="state">No inbox tasks loaded.</div>
+        <ul id="inboxTasksList" class="list"></ul>
+      </section>
+
+      <section class="card">
+        <div class="row spread">
+          <h2>Due Tasks (All Projects)</h2>
+          <button id="refreshDueTasksBtn" class="ghost">Refresh</button>
+        </div>
+        <div id="dueTasksState" class="state">No due tasks loaded.</div>
+        <ul id="dueTasksList" class="list"></ul>
+      </section>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
